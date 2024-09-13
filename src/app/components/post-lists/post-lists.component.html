@@ -1,0 +1,72 @@
+<div class="flex flex-col items-center m-auto my-6 lg:w-[66%] max-sm:w-[40%]">
+  <h2 class="text-2xl font-bold text-gray-800 mb-4">List of Posts</h2>
+
+  <table
+    class="bg-white  rounded-lg shadow-md overflow-hidden border-collapse mb-7"
+  >
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 w-10">
+          ID
+        </th>
+        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 w-20">
+          User ID
+        </th>
+        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 w-40">
+          Title
+        </th>
+        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 w-80">
+          Description
+        </th>
+        <th
+          class="px-4 py-2 text-left text-sm font-medium text-gray-700 w-auto"
+        >
+          Actions
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let post of posts; let i = index" class="hover:bg-gray-50">
+        <td class="px-4 py-2 text-sm text-gray-600">{{ i + 1 }}</td>
+        <td
+          class="px-4 py-2 text-sm text-gray-600 truncate"
+          style="max-width: 80px"
+        >
+          {{ post.userId }}
+        </td>
+        <td
+          class="px-4 py-2 text-sm text-gray-600 truncate"
+          style="max-width: 160px"
+        >
+          {{ post.title }}
+        </td>
+        <td
+          class="px-4 py-2 text-sm text-gray-600 truncate"
+          style="max-width: 400px"
+        >
+          {{ post.body }}
+        </td>
+        <td class="px-4 py-2 text-sm text-gray-600 flex items-center gap-2">
+          <button
+            class="p-1 text-xs font-semibold rounded flex items-center hover:bg-gray-100"
+            (click)="viewPost(post)"
+          >
+            <mat-icon class="text-green-500">visibility</mat-icon>
+          </button>
+          <button
+            class="p-1 text-xs font-semibold rounded flex items-center hover:bg-gray-100"
+            (click)="updatePost(post)"
+          >
+            <mat-icon class="text-blue-500">edit</mat-icon>
+          </button>
+          <button
+            class="p-1 text-xs font-semibold rounded flex items-center hover:bg-gray-100"
+            (click)="deletePost(post.id)"
+          >
+            <mat-icon class="text-red-500">delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
