@@ -25,7 +25,6 @@ export class ApiClientService {
     }
 
     return this.http.get<any[]>(this.url).pipe(
-      map((posts) => posts.slice(0, 10)),
       tap((data) => this.cachingService.setCache(this.cacheKey, data)),
       this.errorHandlingService.handleRequest()
     );

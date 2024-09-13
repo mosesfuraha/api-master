@@ -1,1 +1,38 @@
-<p>pagination works!</p>
+<div class="flex items-center space-x-4 mt-4">
+  <button
+    mat-icon-button
+    (click)="previousPage()"
+    [disabled]="currentPage === 1"
+    class="text-gray-500 hover:text-gray-800"
+  >
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <ng-container *ngFor="let page of displayedPages">
+    <button
+      *ngIf="page !== -1; else ellipsis"
+      (click)="changePage(page)"
+      [ngClass]="{
+        'bg-blue-500 text-white': currentPage === page,
+        'bg-transparent text-gray-800': currentPage !== page
+      }"
+      class="w-10 h-10 rounded-full hover:bg-blue-200 transition-all duration-200"
+    >
+      {{ page }}
+    </button>
+    <ng-template #ellipsis>
+      <span class="w-10 h-10 flex items-center justify-center text-gray-500">
+        ...
+      </span>
+    </ng-template>
+  </ng-container>
+
+  <button
+    mat-icon-button
+    (click)="nextPage()"
+    [disabled]="currentPage === totalPages"
+    class="text-gray-500 hover:text-gray-800"
+  >
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>

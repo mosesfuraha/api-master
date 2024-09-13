@@ -8,7 +8,10 @@ import { ApiClientService } from '../../api/api-client/api-client.service';
 })
 export class PostListsComponent implements OnInit {
   posts: any[] = [];
-  errorOccurred: boolean = false;
+  paginatedPosts: any[] = [];
+  errorOccurred = false;
+  itemsPerPage = 10;
+  currentPage = 1;
 
   constructor(private apiClientService: ApiClientService) {}
 
@@ -21,6 +24,7 @@ export class PostListsComponent implements OnInit {
       next: (data) => {
         this.posts = data;
         this.errorOccurred = false;
+        this.updatePaginatedPosts();
       },
       error: (error) => {
         console.error('Error loading posts:', error);
@@ -29,15 +33,33 @@ export class PostListsComponent implements OnInit {
     });
   }
 
-  viewPost(post: any): void {
-    console.log('Viewing post:', post);
+  updatePaginatedPosts(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedPosts = this.posts.slice(startIndex, endIndex);
   }
 
-  updatePost(post: any): void {
-    console.log('Updating post:', post);
+  changePage(page: number): void {
+    this.currentPage = page;
+    this.updatePaginatedPosts();
   }
 
-  deletePost(postId: number): void {
-    console.log('Deleting post with ID:', postId);
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedPosts();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.getTotalPages()) {
+      this.currentPage++;
+      this.updatePaginatedPosts();
+    }
+  }
+
+ 
+  getTotalPages(): number {
+    return Math.ceil(this.posts.length / this.itemsPerPage);
   }
 }
