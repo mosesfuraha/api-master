@@ -12,6 +12,8 @@ export class PostListsComponent implements OnInit {
   errorOccurred = false;
   itemsPerPage = 10;
   currentPage = 1;
+  selectedPostId: number | null = null;
+  isEditModalOpen = false;
 
   constructor(private apiClientService: ApiClientService) {}
 
@@ -58,8 +60,16 @@ export class PostListsComponent implements OnInit {
     }
   }
 
- 
   getTotalPages(): number {
     return Math.ceil(this.posts.length / this.itemsPerPage);
+  }
+  openEditModal(post: any): void {
+    this.selectedPostId = post;
+    this.isEditModalOpen = true;
+  }
+
+  closeEditModal(): void {
+    this.isEditModalOpen = false;
+    this.selectedPostId = null;
   }
 }

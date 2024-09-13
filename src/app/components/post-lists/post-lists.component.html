@@ -45,13 +45,13 @@
             </td>
             <td
               class="px-4 py-2 text-sm text-gray-600 truncate"
-              style="max-width: 80px"
+              style="max-width: 100px"
             >
               {{ post.userId }}
             </td>
             <td
               class="px-4 py-2 text-sm text-gray-600 truncate"
-              style="max-width: 160px"
+              style="max-width: 180px"
             >
               {{ post.title }}
             </td>
@@ -63,11 +63,13 @@
             </td>
             <td class="px-4 py-2 text-sm text-gray-600 flex items-center gap-2">
               <button
+                [routerLink]="['/post-detail', post.id]"
                 class="p-1 text-xs font-semibold rounded flex items-center hover:bg-gray-100"
               >
                 <mat-icon class="text-green-500">visibility</mat-icon>
               </button>
               <button
+                (click)="openEditModal(post)"
                 class="p-1 text-xs font-semibold rounded flex items-center hover:bg-gray-100"
               >
                 <mat-icon class="text-blue-500">edit</mat-icon>
@@ -97,4 +99,22 @@
   <ng-template #errorTemplate>
     <h2 class="text-2xl font-bold text-red-600 mb-4">Something went wrong</h2>
   </ng-template>
+</div>
+<div
+  *ngIf="isEditModalOpen"
+  class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center"
+>
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Edit Post</h2>
+    <app-post-edit
+      [post]="selectedPostId"
+      (close)="closeEditModal()"
+    ></app-post-edit>
+    <button
+      (click)="closeEditModal()"
+      class="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+    >
+      Close
+    </button>
+  </div>
 </div>

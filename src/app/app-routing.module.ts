@@ -5,7 +5,7 @@ import { PostListsComponent } from './components/post-lists/post-lists.component
 const routes: Routes = [
   { path: '', component: PostListsComponent },
   {
-    path: 'post-detail',
+    path: 'post-detail/:id',
     loadChildren: () =>
       import('./post-detail/post-detail.module').then(
         (m) => m.PostDetailModule
