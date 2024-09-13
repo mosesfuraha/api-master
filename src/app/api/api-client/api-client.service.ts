@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CachingService } from './caching.service';
+import { ErrorHandlingService } from './error-handling.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,8 @@ export class ApiClientService {
 
   constructor(
     private http: HttpClient,
-    private cachingService: CachingService
+    private cachingService: CachingService,
+    private errorHandlingService: ErrorHandlingService
   ) {}
 
   getPosts(): Observable<any[]> {
@@ -24,7 +26,8 @@ export class ApiClientService {
 
     return this.http.get<any[]>(this.url).pipe(
       map((posts) => posts.slice(0, 10)),
-      tap((data) => this.cachingService.setCache(this.cacheKey, data))
+      tap((data) => this.cachingService.setCache(this.cacheKey, data)),
+      this.errorHandlingService.handleRequest()
     );
   }
 }

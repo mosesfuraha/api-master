@@ -8,6 +8,7 @@ import { ApiClientService } from '../../api/api-client/api-client.service';
 })
 export class PostListsComponent implements OnInit {
   posts: any[] = [];
+  errorOccurred: boolean = false;
 
   constructor(private apiClientService: ApiClientService) {}
 
@@ -16,8 +17,15 @@ export class PostListsComponent implements OnInit {
   }
 
   loadPosts(): void {
-    this.apiClientService.getPosts().subscribe((data) => {
-      this.posts = data;
+    this.apiClientService.getPosts().subscribe({
+      next: (data) => {
+        this.posts = data;
+        this.errorOccurred = false;
+      },
+      error: (error) => {
+        console.error('Error loading posts:', error);
+        this.errorOccurred = true;
+      },
     });
   }
 
@@ -29,5 +37,7 @@ export class PostListsComponent implements OnInit {
     console.log('Updating post:', post);
   }
 
-  deletePost(postId: number): void {}
+  deletePost(postId: number): void {
+    console.log('Deleting post with ID:', postId);
+  }
 }
