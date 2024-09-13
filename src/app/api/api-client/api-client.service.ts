@@ -9,7 +9,7 @@ import { CachingService } from './caching.service';
 })
 export class ApiClientService {
   private url = 'https://jsonplaceholder.typicode.com/posts';
-  private cacheKey = 'posts'; // Key for caching posts
+  private cacheKey = 'posts';
 
   constructor(
     private http: HttpClient,
