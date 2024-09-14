@@ -12,9 +12,10 @@ import { PostListsComponent } from './components/post-lists/post-lists.component
 import { PostCreateComponent } from './components/post-create/post-create.component';
 import { PostEditComponent } from './components/post-edit/post-edit.component';
 import { PaginationComponent } from './pagination/pagination.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ApiInterceptorService } from './api/api-client/api-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -30,9 +31,17 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     MatIconModule,
     MatSnackBarModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [provideClientHydration(), provideAnimationsAsync()],
+  providers: [
+    provideClientHydration(),
+    provideAnimationsAsync(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
