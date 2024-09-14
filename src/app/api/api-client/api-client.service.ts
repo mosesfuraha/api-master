@@ -5,12 +5,13 @@ import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CachingService } from './caching.service';
 import { ErrorHandlingService } from './error-handling.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiClientService {
-  private baseUrl = 'https://jsonplaceholder.typicode.com';
+  private baseUrl = environment.apiUrl;
   private cacheKey = 'posts';
 
   constructor(
