@@ -82,7 +82,6 @@ export class PostDetailComponent implements OnInit {
     localStorage.setItem('posts', JSON.stringify(posts));
   }
 
-
   updateCommentsCache(postId: number, comments: any[]): void {
     localStorage.setItem(`comments_${postId}`, JSON.stringify(comments));
   }

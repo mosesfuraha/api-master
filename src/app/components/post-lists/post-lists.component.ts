@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';
 import { ApiClientService } from '../../api/api-client/api-client.service';
 
@@ -7,6 +8,7 @@ import { ApiClientService } from '../../api/api-client/api-client.service';
   styleUrls: ['./post-lists.component.css'],
 })
 export class PostListsComponent implements OnInit {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   posts: any[] = [];
   paginatedPosts: any[] = [];
   errorOccurred = false;
@@ -14,6 +16,8 @@ export class PostListsComponent implements OnInit {
   currentPage = 1;
   selectedPostId: number | null = null;
   isEditModalOpen = false;
+  isDeleteModalOpen = false;
+  postIdToDelete: number | null = null;
 
   constructor(private apiClientService: ApiClientService) {}
 
@@ -63,6 +67,7 @@ export class PostListsComponent implements OnInit {
   getTotalPages(): number {
     return Math.ceil(this.posts.length / this.itemsPerPage);
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   openEditModal(post: any): void {
     this.selectedPostId = post;
     this.isEditModalOpen = true;
@@ -71,5 +76,33 @@ export class PostListsComponent implements OnInit {
   closeEditModal(): void {
     this.isEditModalOpen = false;
     this.selectedPostId = null;
+  }
+  openDeleteModal(postId: number): void {
+    this.postIdToDelete = postId;
+    this.isDeleteModalOpen = true;
+  }
+
+  closeDeleteModal(): void {
+    this.isDeleteModalOpen = false;
+    this.postIdToDelete = null;
+  }
+
+  confirmDelete(): void {
+    if (this.postIdToDelete !== null) {
+      this.apiClientService.deletePostById(this.postIdToDelete).subscribe({
+        next: () => {
+          // Remove the deleted post from the posts array
+          this.posts = this.posts.filter(
+            (post) => post.id !== this.postIdToDelete
+          );
+          this.updatePaginatedPosts();
+          this.closeDeleteModal();
+        },
+        error: (error) => {
+          console.error('Error deleting post:', error);
+          this.closeDeleteModal();
+        },
+      });
+    }
   }
 }

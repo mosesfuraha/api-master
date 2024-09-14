@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { CachingService } from './caching.service';
 import { ErrorHandlingService } from './error-handling.service';
 
@@ -18,23 +19,24 @@ export class ApiClientService {
     private errorHandlingService: ErrorHandlingService
   ) {}
 
+  getPostsFromCache(): any[] | null {
+    return this.cachingService.getCache(this.cacheKey);
+  }
+
   getPosts(): Observable<any[]> {
-    const cachedData = this.cachingService.getCache(this.cacheKey);
+    const cachedData = this.getPostsFromCache();
     if (cachedData) {
       return of(cachedData);
     }
 
     return this.getRequest<any[]>('posts').pipe(
       tap((data) => this.cachingService.setCache(this.cacheKey, data)),
-      catchError((error) => {
-        this.errorHandlingService.handleRequest();
-        return of([]);
-      })
+      this.errorHandlingService.handleRequest<any[]>()
     );
   }
 
   getPostById(id: number): Observable<any> {
-    const cachedData = this.cachingService.getCache(this.cacheKey);
+    const cachedData = this.getPostsFromCache();
     if (cachedData) {
       const post = cachedData.find((item: any) => item.id === id);
       if (post) {
@@ -43,17 +45,14 @@ export class ApiClientService {
     }
 
     return this.getRequest<any>(`posts/${id}`).pipe(
-      catchError((error) => {
-        this.errorHandlingService.handleRequest();
-        return of(null);
-      })
+      this.errorHandlingService.handleRequest<any>()
     );
   }
 
   updatePostById(id: number, updatedPost: any): Observable<any> {
     return this.putRequest<any>(`posts/${id}`, updatedPost).pipe(
       tap(() => {
-        const cachedData = this.cachingService.getCache(this.cacheKey);
+        const cachedData = this.getPostsFromCache();
         if (cachedData) {
           const index = cachedData.findIndex((post: any) => post.id === id);
           if (index !== -1) {
@@ -62,35 +61,26 @@ export class ApiClientService {
           }
         }
       }),
-      catchError((error) => {
-        this.errorHandlingService.handleRequest();
-        return of(null);
-      })
+      this.errorHandlingService.handleRequest<any>()
     );
   }
 
   deletePostById(id: number): Observable<any> {
     return this.deleteRequest<any>(`posts/${id}`).pipe(
       tap(() => {
-        const cachedData = this.cachingService.getCache(this.cacheKey);
+        const cachedData = this.getPostsFromCache();
         if (cachedData) {
           const updatedCache = cachedData.filter((post: any) => post.id !== id);
           this.cachingService.setCache(this.cacheKey, updatedCache);
         }
       }),
-      catchError((error) => {
-        this.errorHandlingService.handleRequest();
-        return of(null);
-      })
+      this.errorHandlingService.handleRequest<any>()
     );
   }
 
   getCommentsByPostId(postId: number): Observable<any[]> {
     return this.getRequest<any[]>(`comments?postId=${postId}`).pipe(
-      catchError((error) => {
-        this.errorHandlingService.handleRequest();
-        return of([]); 
-      })
+      this.errorHandlingService.handleRequest<any[]>()
     );
   }
 
