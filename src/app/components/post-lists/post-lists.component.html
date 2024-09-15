@@ -1,6 +1,14 @@
 <div class="flex flex-col items-center m-auto my-6 lg:w-[66%] max-sm:w-[40%]">
   <ng-container *ngIf="!errorOccurred; else errorTemplate">
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">List of Posts</h2>
+    <div class="flex justify-between items-center w-full mb-4">
+      <h2 class="text-2xl font-bold text-gray-800">List of Posts</h2>
+      <button
+        (click)="openCreateModal()"
+        class="px-4 py-2 bg-green-500 text-white rounded flex items-center gap-2 hover:bg-green-600 transition duration-200"
+      >
+        <mat-icon class="text-white">add</mat-icon>New Post
+      </button>
+    </div>
 
     <div class="w-full">
       <table
@@ -141,5 +149,23 @@
         No
       </button>
     </div>
+  </div>
+</div>
+<div
+  *ngIf="isCreateModalOpen"
+  class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center"
+>
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Create New Post</h2>
+    <app-post-create
+      (close)="closeCreateModal()"
+      (createSuccess)="onCreateSuccess($event)"
+    ></app-post-create>
+    <button
+      (click)="closeCreateModal()"
+      class="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+    >
+      Close
+    </button>
   </div>
 </div>

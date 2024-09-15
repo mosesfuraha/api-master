@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-// api-interceptor.service.ts
 import { Injectable } from '@angular/core';
 import {
   HttpEvent,
@@ -8,28 +6,24 @@ import {
   HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Post } from '../../models/post.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiInterceptorService implements HttpInterceptor {
-  constructor() {}
-
   intercept(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    req: HttpRequest<any>,
+    req: HttpRequest<Post>,
     next: HttpHandler
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): Observable<HttpEvent<any>> {
-    // Add a mock authentication token to the request headers
+  ): Observable<HttpEvent<Post>> {
     const modifiedReq = req.clone({
       setHeaders: {
         Authorization: `Bearer mock-auth-token`,
       },
     });
 
-    // Log all HTTP requests and responses
     return next.handle(modifiedReq).pipe(
       tap({
         next: (event) => {

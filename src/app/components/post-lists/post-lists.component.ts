@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';
 import { ApiClientService } from '../../api/api-client/api-client.service';
+import { Post } from '../../models/post.interface';
 
 @Component({
   selector: 'app-post-lists',
@@ -8,16 +8,16 @@ import { ApiClientService } from '../../api/api-client/api-client.service';
   styleUrls: ['./post-lists.component.css'],
 })
 export class PostListsComponent implements OnInit {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  posts: any[] = [];
-  paginatedPosts: any[] = [];
+  posts: Post[] = [];
+  paginatedPosts: Post[] = [];
   errorOccurred = false;
   itemsPerPage = 10;
   currentPage = 1;
-  selectedPostId: number | null = null;
+  selectedPostId: Post | null = null;
   isEditModalOpen = false;
   isDeleteModalOpen = false;
   postIdToDelete: number | null = null;
+  isCreateModalOpen = false;
 
   constructor(private apiClientService: ApiClientService) {}
 
@@ -67,8 +67,8 @@ export class PostListsComponent implements OnInit {
   getTotalPages(): number {
     return Math.ceil(this.posts.length / this.itemsPerPage);
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  openEditModal(post: any): void {
+
+  openEditModal(post: Post): void {
     this.selectedPostId = post;
     this.isEditModalOpen = true;
   }
@@ -77,6 +77,7 @@ export class PostListsComponent implements OnInit {
     this.isEditModalOpen = false;
     this.selectedPostId = null;
   }
+
   openDeleteModal(postId: number): void {
     this.postIdToDelete = postId;
     this.isDeleteModalOpen = true;
@@ -87,11 +88,18 @@ export class PostListsComponent implements OnInit {
     this.postIdToDelete = null;
   }
 
+  openCreateModal(): void {
+    this.isCreateModalOpen = true;
+  }
+
+  closeCreateModal(): void {
+    this.isCreateModalOpen = false;
+  }
+
   confirmDelete(): void {
     if (this.postIdToDelete !== null) {
       this.apiClientService.deletePostById(this.postIdToDelete).subscribe({
         next: () => {
-          // Remove the deleted post from the posts array
           this.posts = this.posts.filter(
             (post) => post.id !== this.postIdToDelete
           );
@@ -104,5 +112,11 @@ export class PostListsComponent implements OnInit {
         },
       });
     }
+  }
+
+  onCreateSuccess(newPost: Post): void {
+    this.posts.push(newPost);
+    this.updatePaginatedPosts();
+    this.closeCreateModal();
   }
 }

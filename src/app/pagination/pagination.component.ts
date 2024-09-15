@@ -15,32 +15,29 @@ export class PaginationComponent {
     const maxVisiblePages = 3;
 
     if (this.currentPage <= maxVisiblePages) {
-      // Display the first few pages
       for (let i = 1; i <= Math.min(maxVisiblePages, this.totalPages); i++) {
         pages.push(i);
       }
       if (this.totalPages > maxVisiblePages) {
-        pages.push(-1); // Indicate more pages (ellipsis)
-        pages.push(this.totalPages); // Show the last page
+        pages.push(-1);
+        pages.push(this.totalPages);
       }
     } else if (
       this.currentPage > maxVisiblePages &&
       this.currentPage < this.totalPages - 1
     ) {
-      // Display pages around the current page
-      pages.push(1); // First page
-      pages.push(-1); // Ellipsis
-      pages.push(this.currentPage - 1); // Previous page
-      pages.push(this.currentPage); // Current page
-      pages.push(this.currentPage + 1); // Next page
+      pages.push(1);
+      pages.push(-1);
+      pages.push(this.currentPage - 1);
+      pages.push(this.currentPage);
+      pages.push(this.currentPage + 1);
       if (this.currentPage + 1 < this.totalPages - 1) {
-        pages.push(-1); // Ellipsis
+        pages.push(-1);
       }
-      pages.push(this.totalPages); // Last page
+      pages.push(this.totalPages);
     } else {
-      // Display the last few pages
-      pages.push(1); // First page
-      pages.push(-1); // Ellipsis
+      pages.push(1);
+      pages.push(-1);
       for (
         let i = this.totalPages - (maxVisiblePages - 1);
         i <= this.totalPages;
