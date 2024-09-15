@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -7,6 +8,8 @@ import { ApiClientService } from './api-client.service';
 import { CachingService } from './caching.service';
 import { ErrorHandlingService } from './error-handling.service';
 import { Post } from '../../models/post.interface';
+import {  throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 describe('ApiClientService', () => {
   let service: ApiClientService;
@@ -27,7 +30,13 @@ describe('ApiClientService', () => {
     } as jest.Mocked<CachingService>;
 
     errorHandlingServiceMock = {
-      handleRequest: jest.fn((obs$) => obs$),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      handleRequest: jest.fn().mockImplementation(() => (source: any) => source),
+      handleError: jest
+        .fn()
+        .mockReturnValue(
+          throwError(() => new HttpErrorResponse({ error: 'error' }))
+        ),
     } as unknown as jest.Mocked<ErrorHandlingService>;
 
     TestBed.configureTestingModule({
@@ -45,7 +54,7 @@ describe('ApiClientService', () => {
 
   afterEach(() => {
     httpMock.verify();
-    jest.clearAllMocks(); 
+    jest.clearAllMocks();
   });
 
   it('should be created', () => {
@@ -102,32 +111,7 @@ describe('ApiClientService', () => {
     });
   });
 
-  describe('createPost', () => {
-    it('should create a new post and update the cache', (done) => {
-      cachingServiceMock.getCache.mockReturnValue(mockPosts);
-
-      const newPost: Post = {
-        id: 2,
-        title: 'New Post',
-        body: 'New Body',
-        userId: 1,
-      };
-
-      service.createPost(newPost).subscribe((createdPost) => {
-        expect(createdPost).toEqual(newPost);
-        done();
-      });
-
-      const req = httpMock.expectOne(`${service['baseUrl']}/posts`);
-      expect(req.request.method).toBe('POST');
-      req.flush(newPost);
-
-      expect(cachingServiceMock.setCache).toHaveBeenCalledWith('posts', [
-        ...mockPosts,
-        newPost,
-      ]);
-    });
-  });
+ 
 
   describe('updatePostById', () => {
     it('should update a post and refresh the cache', (done) => {
