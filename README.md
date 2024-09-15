@@ -1,131 +1,58 @@
 # ApiMaster
 
-ApiMaster is an Angular application for managing posts with CRUD operations, featuring environment-specific API configurations and robust error handling using Angular Material's `MatSnackBar`.
+## Project Description
+
+ApiMaster is an Angular application designed for managing posts with CRUD (Create, Read, Update, Delete) operations. It features:
+
+- Environment-specific API configurations
+- Robust error handling using Angular Material's MatSnackBar
+- Integration with a RESTful API (using JSONPlaceholder for development)
+- Responsive design for various device sizes
 
 **Deployed Application:** [https://api-master-eta.vercel.app/](https://api-master-eta.vercel.app/)
 
-## Table of Contents
+## Setup and Run Instructions
 
-1. [Project Setup](#project-setup)
-2. [Development Server](#development-server)
-3. [Environment Configuration](#environment-configuration)
-4. [Error Handling](#error-handling)
-5. [Code Scaffolding](#code-scaffolding)
-6. [Building the Project](#building-the-project)
-7. [Running Tests](#running-tests)
-8. [Deployment](#deployment)
-9. [Further Help](#further-help)
+1. Clone the repository
+2. Install dependencies using npm
+3. Run the development server
+4. Open your browser and navigate to `http://localhost:4200/`
 
-## Project Setup
+## Available npm Scripts
 
-This project was generated with Angular CLI version 18.2.0.
+- `npm start`: Starts the development server
+- `npm run build`: Builds the project for production
+- `npm test`: Runs unit tests using Jest
+- `npm run lint`: Lints the project files
 
-## Development Server
+## Project Structure and Key Features
 
-Run the development server with:
+### Project Structure
 
-```bash
-ng serve
-```
+The project follows a standard Angular application structure with components, services, models, and interceptors organized in their respective directories under the `src/app/` folder. Environment configurations are stored in the `src/environments/` directory.
 
-Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### Key Features
 
-## Environment Configuration
+1. **Environment-specific Configurations**:
 
-ApiMaster uses different configurations for development, staging, and production environments:
+   - Allows for different API URLs and settings for development, staging, and production
 
-- Development: `src/environments/environment.ts`
-- Production: `src/environments/environment.prod.ts`
-- Staging: `src/environments/environment.staging.ts`
+2. **CRUD Operations**:
 
-Example configuration (`environment.ts`):
+   - Provides methods for fetching, creating, updating, and deleting posts
 
-```typescript
-export const environment = {
-  production: false,
-  apiUrl: "https://jsonplaceholder.typicode.com", 
-};
-```
+3. **Error Handling**:
 
-To build for a specific environment:
+   - Centralized error handling service
+   - Uses Angular Material's MatSnackBar for user-friendly error messages
 
-```bash
-ng build --configuration=development
-ng build --configuration=production
-ng build --configuration=staging
-```
+4. **Interceptors**:
 
-## Error Handling
+   - HTTP interceptor for adding headers and handling global HTTP-related tasks
 
-Error handling uses Angular Material's `MatSnackBar` for displaying user-friendly messages. The `ErrorHandlingService` intercepts errors and shows appropriate messages.
+5. **Responsive Design**:
 
-Example usage:
+   - Utilizes Angular Material and custom CSS for a responsive layout
 
-```typescript
-import { Injectable } from "@angular/core";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { catchError } from "rxjs/operators";
-import { throwError } from "rxjs";
-
-@Injectable({
-  providedIn: "root",
-})
-export class ErrorHandlingService {
-  constructor(private snackBar: MatSnackBar) {}
-
-  handleRequest<T>() {
-    return catchError((error) => {
-      this.snackBar.open("An unexpected error occurred. Please try again.", "Close", {
-        duration: 3000,
-        verticalPosition: "top",
-        horizontalPosition: "right",
-      });
-      return throwError(() => error);
-    });
-  }
-}
-```
-
-## Code Scaffolding
-
-Generate a new component:
-
-```bash
-ng generate component component-name
-```
-
-You can also generate other Angular entities (directives, pipes, services, etc.).
-
-## Building the Project
-
-Build the project with:
-
-```bash
-ng build
-```
-
-The build artifacts will be stored in the `dist/` directory.
-
-## Running Tests
-
-Run unit tests:
-
-```bash
-npm test
-```
-
-## Deployment
-
-The application is deployed and accessible at:
-
-[https://api-master-eta.vercel.app/](https://api-master-eta.vercel.app/)
-
-## Further Help
-
-For more help on the Angular CLI:
-
-```bash
-ng help
-```
-
-Or visit the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+6. **Lazy Loading**:
+   - Implements lazy loading for optimized performance on larger applications
