@@ -1,7 +1,13 @@
-<div class="flex flex-col items-center m-auto my-6 lg:w-[66%] max-sm:w-[40%]">
+<div
+  class="flex flex-col items-center m-auto my-6 w-full lg:w-[66%] sm:w-[90%] max-sm:w-[100%]"
+>
   <ng-container *ngIf="!errorOccurred; else errorTemplate">
-    <div class="flex justify-between items-center w-full mb-4">
-      <h2 class="text-2xl font-bold text-gray-800">List of Posts</h2>
+    <div
+      class="flex flex-col sm:flex-row sm:justify-between sm:items-center w-full mb-4"
+    >
+      <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2 sm:mb-0">
+        List of Posts
+      </h2>
       <button
         (click)="openCreateModal()"
         class="px-4 py-2 bg-green-500 text-white rounded flex items-center gap-2 hover:bg-green-600 transition duration-200"
@@ -10,10 +16,8 @@
       </button>
     </div>
 
-    <div class="w-full">
-      <table
-        class="bg-white rounded-lg shadow-md overflow-hidden border-collapse w-full"
-      >
+    <div class="w-full overflow-x-auto">
+      <table class="bg-white rounded-lg shadow-md border-collapse w-full">
         <thead class="bg-gray-100">
           <tr>
             <th
@@ -93,7 +97,7 @@
         </tbody>
       </table>
 
-      <div class="flex justify-end mb-4">
+      <div class="flex justify-end mt-4">
         <app-pagination
           [currentPage]="currentPage"
           [totalPages]="getTotalPages()"
@@ -106,12 +110,15 @@
   </ng-container>
 
   <ng-template #errorTemplate>
-    <h2 class="text-2xl font-bold text-red-600 mb-4">Something went wrong</h2>
+    <h2 class="text-xl sm:text-2xl font-bold text-red-600 mb-4">
+      Something went wrong
+    </h2>
   </ng-template>
 </div>
+
 <div
   *ngIf="isEditModalOpen"
-  class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center"
+  class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4"
 >
   <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
     <h2 class="text-xl font-semibold text-gray-800 mb-4">Edit Post</h2>
@@ -127,9 +134,10 @@
     </button>
   </div>
 </div>
+
 <div
   *ngIf="isDeleteModalOpen"
-  class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center"
+  class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4"
 >
   <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
     <h2 class="font-semibold text-gray-800 mb-4">
@@ -151,9 +159,10 @@
     </div>
   </div>
 </div>
+
 <div
   *ngIf="isCreateModalOpen"
-  class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center"
+  class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4"
 >
   <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
     <h2 class="text-xl font-semibold text-gray-800 mb-4">Create New Post</h2>

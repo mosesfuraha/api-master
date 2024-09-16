@@ -1,6 +1,13 @@
 <div *ngIf="post" class="p-4 max-w-xl mx-auto">
   <div class="bg-white rounded-lg shadow-md p-4">
-    <div class="text-gray-600 flex items-center mb-2">
+    <div class="text-gray-600 flex items-center justify-between mb-4">
+      <button
+        routerLink="/"
+        class="border border-gray-500 rounded-lg px-3 py-1 text-gray-700 hover:bg-gray-100 transition duration-200"
+      >
+        Back Home
+      </button>
+
       <span class="font-semibold text-xs bg-gray-200 px-2 py-1 rounded-full">
         User ID: {{ post.userId }}
       </span>

@@ -10,9 +10,10 @@ import { Post } from '../../models/post.interface';
 })
 export class PostEditComponent implements OnInit {
   @Input() post: Post | null = null;
+  
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() onClose = new EventEmitter<void>(); // Renamed to avoid conflicts
-  @Output() update = new EventEmitter<Post>(); // Use Post interface
+  @Output() onClose = new EventEmitter<void>(); 
+  @Output() update = new EventEmitter<Post>(); 
   editForm: FormGroup;
 
   constructor(
